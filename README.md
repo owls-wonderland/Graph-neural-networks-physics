@@ -1,1 +1,1 @@
-# interactio_network
+# Graph neural networks physics
