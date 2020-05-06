@@ -1,1 +1,1 @@
-# Graph neural networks physics
+# Graph neural networks and physics
