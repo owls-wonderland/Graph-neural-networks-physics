@@ -17,7 +17,7 @@ import cv2
 #All measurements are in SI units
 
 #1000 time steps
-total_state=1000000;
+total_state=10;
 
 #3 features on the state [mass,x,y]
 fea_num=3;
@@ -58,10 +58,18 @@ def setup(total_state,n_body,fea_num,orbit):
 #def norm(x):
 # return np.sqrt(np.sum(x**2));
 
-def gen(n_body,orbit):
+def producing_data(n_body,orbit):
   # initialization on just first state
   time_body_masspos=setup(total_state,n_body,fea_num,orbit);
+  print(time_body_masspos[0])
+  #for i in range(n_body):          ////////////////printing
+    #print("iiiii",i)
+    #for j in range(fea_num):
+      #print(j)
+      #print(time_body_masspos[0][i][j])  /////////////////////
+
   for i in range(1,total_state):
+    print("state",i)
     time_body_masspos[i]=calc(time_body_masspos[i-1],n_body);
   return time_body_masspos;
 
@@ -72,17 +80,16 @@ def calc(cur_state,n_body):
   #acc=np.zeros((n_body,2),dtype=float);
   for i in range(n_body):
     for j in range(i+1,n_body):
-      if(j!=i):
-        fx=get_force(cur_state[i][:3],cur_state[j][:3],x);
-        fy = get_force(cur_state[i][:3], cur_state[j][:3], y);
-        #fz = get_force(cur_state[i][:3], cur_state[j][:3], 'z');
-        #f_mat[i,j]+=f;
-        #f_mat[j,i]-=f;
+        print("ij",i,j)
+        fx=get_force(cur_state[i],cur_state[j],'x');
+        fy = get_force(cur_state[i], cur_state[j], 'y');
+        print(fx, fy)
+        #fz = get_force(cur_state[i], cur_state[j], 'z');
     #f_sum[i]=np.sum(f_mat[i],axis=0);
     #acc[i]=f_sum[i]/cur_state[i][0];
     #next_state[i][0]=cur_state[i][0];
-    next_state[i][3:5]=cur_state[i][3:5]+acc[i]*diff_t;
-    next_state[i][1:3]=cur_state[i][1:3]+next_state[i][3:5]*diff_t;
+    #next_state[i][3:5]=cur_state[i][3:5]+acc[i]*diff_t;
+    #next_state[i][1:3]=cur_state[i][1:3]+next_state[i][3:5]*diff_t;
   return next_state;
 
 def get_force(body1, body2, axis):
@@ -98,24 +105,24 @@ def get_force(body1, body2, axis):
 def F(x):
     return
 
-"""def make_video(xy,filename):
-  os.system("rm -rf pics/*");
-  FFMpegWriter = manimation.writers['ffmpeg']
-  metadata = dict(title='Movie Test', artist='Matplotlib',
-                  comment='Movie support!')
-  writer = FFMpegWriter(fps=15, metadata=metadata)
-  fig = plt.figure()
-  plt.xlim(-200, 200)
-  plt.ylim(-200, 200)
-  fig_num=len(xy);
-  color=['ro','bo','go','ko','yo','mo','co'];
-  with writer.saving(fig, filename, len(xy)):
-    for i in range(len(xy)):
-      for j in range(len(xy[0])):
-        plt.plot(xy[i,j,1],xy[i,j,0],color[j%len(color)]);
-      writer.grab_frame();"""
+#def make_video(xy,filename):
+#  os.system("rm -rf pics/*");
+#  FFMpegWriter = manimation.writers['ffmpeg']
+#  metadata = dict(title='Movie Test', artist='Matplotlib',
+#                  comment='Movie support!')
+#  writer = FFMpegWriter(fps=15, metadata=metadata)
+#  fig = plt.figure()
+#  plt.xlim(-200, 200)
+#  plt.ylim(-200, 200)
+#  fig_num=len(xy);
+#  color=['ro','bo','go','ko','yo','mo','co'];
+#  with writer.saving(fig, filename, len(xy)):
+#    for i in range(len(xy)):
+#      for j in range(len(xy[0])):
+#        plt.plot(xy[i,j,1],xy[i,j,0],color[j%len(color)]);
+#      writer.grab_frame();
 
 if __name__=='__main__':
-    time_body_masspos = gen(3,True);
+    time_body_masspos = producing_data(2,True);
     #xy=data[:,:,1:3];
     #make_video(xy,"test.mp4");
